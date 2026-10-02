@@ -1,12 +1,16 @@
+#pragma once
 #include<iostream>
 #include<vector>
 #include<glm/vec3.hpp>
 #include <utility>
 #include <algorithm>
+#include<Eigen/Dense>
+
 
 #include "mesh_generator.h"
 using namespace std;
 using namespace glm;
+using namespace Eigen;
 
 struct Point {
     vec3 x, v;
@@ -25,6 +29,8 @@ struct Force {
 
 vector<Point> points_list;
 vector<Edge> edges_list;
+
+MatrixXf H = MatrixXf::Zero(12, 12);
 
 void mesh_structure(){
     for(auto& point : vertices){
@@ -63,4 +69,25 @@ Force compute_force(vector<Point> points_list, Edge edge){
     F.f2 = f2;
     return F;
 
+}
+
+
+MatrixXf compute_H(vector<Edge> edges_list){
+    for (auto& e : edges_list){
+        //cout << "p1=" << e.p1 << " p2=" << e.p2 << " k=" << e.k << endl;
+        H(e.p1, e.p2) += e.k;
+        H(e.p2, e.p1) += e.k;
+        H(e.p1, e.p1) -= e.k;
+        H(e.p2, e.p2) -= e.k;
+    }
+
+    return H;
+}
+
+MatrixXf compute_W(float dt, MatrixXf H, float m){
+    MatrixXf I = MatrixXf::Identity(12, 12);
+    MatrixXf A = I - dt*dt/m*H;
+    MatrixXf W = A.inverse();
+
+    return W;
 }

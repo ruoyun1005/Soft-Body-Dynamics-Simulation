@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(hw-gl)
+project(soft-body)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -8,6 +8,7 @@ find_package(PkgConfig REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm CONFIG REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 pkg_check_modules(GLFW REQUIRED glfw3)
 pkg_check_modules(GLM REQUIRED glm)
@@ -49,4 +50,4 @@ add_compile_definitions(GL_SILENCE_DEPRECATION)
 # 改後
 
 add_executable(window main.cpp)
-target_link_libraries(window PRIVATE commonLib glm::glm)
+target_link_libraries(window PRIVATE commonLib glm::glm Eigen3::Eigen)

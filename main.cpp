@@ -9,6 +9,7 @@
 #include<glm/vec4.hpp>
 #include<glm/mat4x4.hpp>
 #include<glm/mat3x3.hpp>
+#include<Eigen/Dense>
 
 #include "explicit_euler.h"
 #include "inplicit_euler.h"
@@ -17,6 +18,7 @@
 
 using namespace std;
 using namespace glm;
+using namespace Eigen;
 
 int winWidth = 1280;
 int winHeight = 720;
@@ -53,8 +55,16 @@ void init() {
 
     //     outfile << i << "," << x_curr << endl;
     // };
+    
     mesh_generator();
+    mesh_structure();
+    MatrixXf H =  compute_H(edges_list);
 
+    cout << H << endl;
+
+    MatrixXf W = compute_W(0.5, H, 2);
+    cout << W << endl;
+    cout << "Row sums: " << W.rowwise().sum().transpose() << endl;
 }
 
 

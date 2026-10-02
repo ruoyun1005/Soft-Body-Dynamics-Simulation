@@ -1,3 +1,4 @@
+#pragma once
 #include<iostream>
 #include<vector>
 #include<glm/vec3.hpp>
@@ -10,6 +11,8 @@ using namespace glm;
 float phi = (1.0f + sqrt(5.0f)) / 2.0f;
 
 vector<pair<int, int>> edges_id;
+
+
 
 vector<vec3> vertices = {
     {-1,  phi, 0}, { 1,  phi, 0}, {-1, -phi, 0}, { 1, -phi, 0},
